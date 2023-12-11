@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-path-ip
+  namespace: foo
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  action: ALLOW
+  rules:
+  - to:
+    - operation:
+        paths: ["/ip"]

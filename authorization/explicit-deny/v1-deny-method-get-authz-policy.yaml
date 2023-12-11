@@ -1,0 +1,15 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: deny-method-get
+  namespace: foo
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  action: DENY
+  rules:
+  - to:
+    - operation:
+        methods: ["GET"]
+        ports: ["80"] # 如果沒有指定Port 是所有port的GET都Deny
