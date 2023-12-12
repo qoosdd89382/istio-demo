@@ -1,0 +1,27 @@
+apiVersion: "security.istio.io/v1beta1"
+kind: "RequestAuthentication"
+metadata:
+  name: keycloak-jwt
+  namespace: test-oidc
+spec:
+  jwtRules:
+  - issuer: "http://keycloak-svc.keycloak.svc.cluster.local:8080/realms/basic"
+    jwksUri: "http://keycloak-svc.keycloak.svc.cluster.local:8080/realms/basic/protocol/openid-connect/certs"
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: httpbin-authz
+  namespace: test-oidc
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        requestPrincipals: ["*"]
+    when:
+    - key: request.auth.claims[scope]
+      values: ["profile"]
