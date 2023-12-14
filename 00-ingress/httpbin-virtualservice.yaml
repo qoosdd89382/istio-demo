@@ -1,12 +1,13 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: httpbin
+  name: test-gw-httpbin
+  namespace: test-gw
 spec:
   hosts:
-  - "httpbin.example.com"
+  - "httpbin-test-gw.127.0.0.1.nip.io"
   gateways:
-  - httpbin-gateway
+  - test-gw-httpbin-gateway
   http:
   - match:
     - uri:
